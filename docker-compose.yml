@@ -5,7 +5,7 @@ services:
     container_name: ebock-db
     restart: always
     ports:
-      - 5444:5432
+      - 5432:5432
     volumes:
       - db_data:/var/lib/postgresql/data
       - ../ebock-db/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -35,7 +35,7 @@ services:
       - ./webserver/includes/:/etc/nginx/includes/
       - ./webserver/html:/usr/share/nginx/html/
     ports:
-      - "80:80"
+      - 80:80
     #depends_on:
     #  - backend
     networks:
