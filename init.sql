@@ -1,0 +1,159 @@
+CREATE TABLE user_(
+   cip VARCHAR(8) ,
+   first_name VARCHAR(50)  NOT NULL,
+   last_name VARCHAR(50)  NOT NULL,
+   email VARCHAR(90)  NOT NULL,
+   password VARCHAR(100)  NOT NULL,
+   admin BOOLEAN NOT NULL,
+   profile_picture_url VARCHAR(50) ,
+   enabled BOOLEAN NOT NULL,
+   created_at TIMESTAMP NOT NULL,
+   updated_at VARCHAR(50) ,
+   PRIMARY KEY(cip),
+   UNIQUE(email)
+);
+
+CREATE TABLE review(
+   reviewer_cip VARCHAR(8) ,
+   reviewed_cip VARCHAR(8) ,
+   timestamp_ TIMESTAMP,
+   content VARCHAR(360)  NOT NULL,
+   rating SMALLINT NOT NULL,
+   updated_at TIMESTAMP,
+   PRIMARY KEY(reviewer_cip, reviewed_cip, timestamp_),
+   FOREIGN KEY(reviewer_cip) REFERENCES user_(cip),
+   FOREIGN KEY(reviewed_cip) REFERENCES user_(cip)
+);
+
+CREATE TABLE delivery_option(
+   delivery_optn_id SERIAL,
+   name VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(delivery_optn_id),
+   UNIQUE(name)
+);
+
+CREATE TABLE category(
+   category_id SERIAL,
+   name VARCHAR(50)  NOT NULL,
+   parent_category INTEGER NOT NULL,
+   PRIMARY KEY(category_id),
+   UNIQUE(name),
+   FOREIGN KEY(parent_category) REFERENCES category(category_id)
+);
+
+CREATE TABLE tag(
+   tag_id SERIAL,
+   name VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(tag_id),
+   UNIQUE(name)
+);
+
+CREATE TABLE log_category(
+   log_category_name VARCHAR(50) ,
+   PRIMARY KEY(log_category_name)
+);
+
+CREATE TABLE wear(
+   wear_id SERIAL,
+   name VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(wear_id),
+   UNIQUE(name)
+);
+
+CREATE TABLE item(
+   item_id SERIAL,
+   name VARCHAR(60)  NOT NULL,
+   description VARCHAR(350)  NOT NULL,
+   price MONEY NOT NULL,
+   added_at TIMESTAMP NOT NULL,
+   updated_at TIMESTAMP,
+   sold BOOLEAN NOT NULL,
+   quantity SMALLINT NOT NULL,
+   archived BOOLEAN NOT NULL,
+   category_id INTEGER NOT NULL,
+   wear_id INTEGER NOT NULL,
+   seller_cip VARCHAR(8)  NOT NULL,
+   PRIMARY KEY(item_id),
+   FOREIGN KEY(category_id) REFERENCES category(category_id),
+   FOREIGN KEY(seller_cip) REFERENCES user_(cip),
+   FOREIGN KEY(wear_id) REFERENCES wear(wear_id)
+);
+
+CREATE TABLE log(
+   id SERIAL,
+   timestamp_ TIMESTAMP NOT NULL,
+   content_1 VARCHAR(350)  NOT NULL,
+   content_2 VARCHAR(350) ,
+   log_category_name VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(log_category_name) REFERENCES log_category(log_category_name)
+);
+
+CREATE TABLE image(
+   image_url VARCHAR(50) ,
+   item_id INTEGER NOT NULL,
+   PRIMARY KEY(image_url),
+   FOREIGN KEY(item_id) REFERENCES item(item_id)
+);
+
+CREATE TABLE order_(
+   order_id SERIAL,
+   created_at TIMESTAMP NOT NULL,
+   updated_at VARCHAR(50) ,
+   quantity VARCHAR(50)  NOT NULL,
+   item_id INTEGER NOT NULL,
+   buyer_cip VARCHAR(8)  NOT NULL,
+   PRIMARY KEY(order_id),
+   FOREIGN KEY(item_id) REFERENCES item(item_id),
+   FOREIGN KEY(buyer_cip) REFERENCES user_(cip)
+);
+
+CREATE TABLE comment(
+   comment_id SERIAL,
+   timestamp_ TIMESTAMP NOT NULL,
+   content VARCHAR(360)  NOT NULL,
+   updated_at TIMESTAMP,
+   comment_id_1 INTEGER NOT NULL,
+   item_id INTEGER NOT NULL,
+   sender_cip VARCHAR(8)  NOT NULL,
+   PRIMARY KEY(comment_id),
+   FOREIGN KEY(comment_id_1) REFERENCES comment(comment_id),
+   FOREIGN KEY(item_id) REFERENCES item(item_id),
+   FOREIGN KEY(sender_cip) REFERENCES user_(cip)
+);
+
+CREATE TABLE order_message(
+   timestamp_ TIMESTAMP,
+   content TEXT NOT NULL,
+   read BOOLEAN NOT NULL,
+   order_id INTEGER NOT NULL,
+   sender_cip VARCHAR(8)  NOT NULL,
+   PRIMARY KEY(timestamp_),
+   FOREIGN KEY(order_id) REFERENCES order_(order_id),
+   FOREIGN KEY(sender_cip) REFERENCES user_(cip)
+);
+
+CREATE TABLE item_del_option(
+   item_id INTEGER,
+   delivery_optn_id INTEGER,
+   PRIMARY KEY(item_id, delivery_optn_id),
+   FOREIGN KEY(item_id) REFERENCES item(item_id),
+   FOREIGN KEY(delivery_optn_id) REFERENCES delivery_option(delivery_optn_id)
+);
+
+CREATE TABLE tag_item(
+   item_id INTEGER,
+   tag_id INTEGER,
+   PRIMARY KEY(item_id, tag_id),
+   FOREIGN KEY(item_id) REFERENCES item(item_id),
+   FOREIGN KEY(tag_id) REFERENCES tag(tag_id)
+);
+
+CREATE TABLE favorite(
+   cip VARCHAR(8) ,
+   item_id INTEGER,
+   added_at TIMESTAMP NOT NULL,
+   PRIMARY KEY(cip, item_id),
+   FOREIGN KEY(cip) REFERENCES user_(cip),
+   FOREIGN KEY(item_id) REFERENCES item(item_id)
+);
