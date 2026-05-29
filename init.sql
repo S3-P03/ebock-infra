@@ -1,10 +1,14 @@
+create schema ebock;
+
+set search_path = ebock;
+
 CREATE TABLE user_(
    cip VARCHAR(8) ,
    first_name VARCHAR(50)  NOT NULL,
    last_name VARCHAR(50)  NOT NULL,
    email VARCHAR(90)  NOT NULL,
    password VARCHAR(100)  NOT NULL,
-   admin BOOLEAN NOT NULL,
+   is_admin BOOLEAN NOT NULL,
    profile_picture_url VARCHAR(50) ,
    enabled BOOLEAN NOT NULL,
    created_at TIMESTAMP NOT NULL,
@@ -35,7 +39,7 @@ CREATE TABLE delivery_option(
 CREATE TABLE category(
    category_id SERIAL,
    name VARCHAR(50)  NOT NULL,
-   parent_category INTEGER NOT NULL,
+   parent_category INTEGER,
    PRIMARY KEY(category_id),
    UNIQUE(name),
    FOREIGN KEY(parent_category) REFERENCES category(category_id)
@@ -79,7 +83,7 @@ CREATE TABLE item(
    FOREIGN KEY(wear_id) REFERENCES wear(wear_id)
 );
 
-CREATE TABLE log(
+CREATE TABLE log_(
    id SERIAL,
    timestamp_ TIMESTAMP NOT NULL,
    content_1 VARCHAR(350)  NOT NULL,
@@ -89,7 +93,7 @@ CREATE TABLE log(
    FOREIGN KEY(log_category_name) REFERENCES log_category(log_category_name)
 );
 
-CREATE TABLE image(
+CREATE TABLE image_(
    image_url VARCHAR(50) ,
    item_id INTEGER NOT NULL,
    PRIMARY KEY(image_url),
@@ -108,7 +112,7 @@ CREATE TABLE order_(
    FOREIGN KEY(buyer_cip) REFERENCES user_(cip)
 );
 
-CREATE TABLE comment(
+CREATE TABLE comment_(
    comment_id SERIAL,
    timestamp_ TIMESTAMP NOT NULL,
    content VARCHAR(360)  NOT NULL,
@@ -117,7 +121,7 @@ CREATE TABLE comment(
    item_id INTEGER NOT NULL,
    sender_cip VARCHAR(8)  NOT NULL,
    PRIMARY KEY(comment_id),
-   FOREIGN KEY(comment_id_1) REFERENCES comment(comment_id),
+   FOREIGN KEY(comment_id_1) REFERENCES comment_(comment_id),
    FOREIGN KEY(item_id) REFERENCES item(item_id),
    FOREIGN KEY(sender_cip) REFERENCES user_(cip)
 );
@@ -125,7 +129,7 @@ CREATE TABLE comment(
 CREATE TABLE order_message(
    timestamp_ TIMESTAMP,
    content TEXT NOT NULL,
-   read BOOLEAN NOT NULL,
+   is_read BOOLEAN NOT NULL,
    order_id INTEGER NOT NULL,
    sender_cip VARCHAR(8)  NOT NULL,
    PRIMARY KEY(timestamp_),
@@ -157,3 +161,24 @@ CREATE TABLE favorite(
    FOREIGN KEY(cip) REFERENCES user_(cip),
    FOREIGN KEY(item_id) REFERENCES item(item_id)
 );
+
+
+INSERT INTO user_ (cip, first_name, last_name, email, password, is_admin, profile_picture_url, enabled, created_at, updated_at) 
+VALUES 
+   ('bela3439', 'Alex', 'Bellefroid Lefkakis', 'bela3439@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
+   ('boum7113', 'Milo', 'Boucher', 'boum7113@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
+   ('dubw5596', 'William', 'Dubuc', 'dubw5596@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
+   ('herl2700', 'Léanne', 'Héroux', 'herl2700@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
+   ('larj4236', 'Jean-Félix', 'Larouche', 'larj4236@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
+   ('pele3157', 'Éliane', 'Pelletier', 'pele3157@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
+   ('test1234', 'Utiilisateur', 'Test', 'test1234@usherbrooke.ca', 'test5678', false, NULL, true, NOW(), NULL);
+
+INSERT INTO delivery_option (name) VALUES ('Livraison'), ('À récupérer'), ('Transfert par courriel');
+
+INSERT INTO category (name, parent_category) VALUES ('Vêtements', NULL), ('Électronique', NULL), ('Livres', NULL), ('Maisons', NULL), ('Sports', NULL), ('Autres', NULL), ('Hauts', 1), ('Bas', 1), ('Chaussures', 1), ('Accessoires', 1);
+
+INSERT INTO tag (name) VALUES ('Électronique'), ('Neuf'), ('Cours'), ('Usager');
+
+INSERT INTO log_category (log_category_name) VALUES ('User Actions'), ('Item Management'), ('Orders'), ('Comments'), ('System Events');
+
+INSERT INTO wear (name) VALUES ('Factory New'), ('Minimal Wear'), ('Field-Tested'), ('Well-Worn'), ('Battle-Scarred');
