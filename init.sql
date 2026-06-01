@@ -7,7 +7,6 @@ CREATE TABLE user_(
    first_name VARCHAR(50)  NOT NULL,
    last_name VARCHAR(50)  NOT NULL,
    email VARCHAR(90)  NOT NULL,
-   password VARCHAR(100)  NOT NULL,
    is_admin BOOLEAN NOT NULL,
    profile_picture_url VARCHAR(50) ,
    enabled BOOLEAN NOT NULL,
@@ -163,15 +162,15 @@ CREATE TABLE favorite(
 );
 
 
-INSERT INTO user_ (cip, first_name, last_name, email, password, is_admin, profile_picture_url, enabled, created_at, updated_at) 
+INSERT INTO user_ (cip, first_name, last_name, email, is_admin, profile_picture_url, enabled, created_at, updated_at) 
 VALUES 
-   ('bela3439', 'Alex', 'Bellefroid Lefkakis', 'bela3439@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
-   ('boum7113', 'Milo', 'Boucher', 'boum7113@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
-   ('dubw5596', 'William', 'Dubuc', 'dubw5596@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
-   ('herl2700', 'Léanne', 'Héroux', 'herl2700@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
-   ('larj4236', 'Jean-Félix', 'Larouche', 'larj4236@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
-   ('pele3157', 'Éliane', 'Pelletier', 'pele3157@usherbrooke.ca', 'password', false, NULL, true, NOW(), NULL),
-   ('test1234', 'Utiilisateur', 'Test', 'test1234@usherbrooke.ca', 'test5678', false, NULL, true, NOW(), NULL);
+   ('bela3439', 'Alex', 'Bellefroid Lefkakis', 'bela3439@usherbrooke.ca', false, NULL, true, NOW(), NULL),
+   ('boum7113', 'Milo', 'Boucher', 'boum7113@usherbrooke.ca', false, NULL, true, NOW(), NULL),
+   ('dubw5596', 'William', 'Dubuc', 'dubw5596@usherbrooke.ca', false, NULL, true, NOW(), NULL),
+   ('herl2700', 'Léanne', 'Héroux', 'herl2700@usherbrooke.ca', false, NULL, true, NOW(), NULL),
+   ('larj4236', 'Jean-Félix', 'Larouche', 'larj4236@usherbrooke.ca', false, NULL, true, NOW(), NULL),
+   ('pele3157', 'Éliane', 'Pelletier', 'pele3157@usherbrooke.ca', false, NULL, true, NOW(), NULL),
+   ('test1234', 'Utiilisateur', 'Test', 'test1234@usherbrooke.ca', false, NULL, true, NOW(), NULL);
 
 INSERT INTO delivery_option (name) VALUES ('Livraison'), ('À récupérer'), ('Transfert par courriel');
 
