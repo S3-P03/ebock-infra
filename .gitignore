@@ -1,1 +1,4 @@
 webserver/html/
+*.env
+keycloak/data/backend.json
+keycloak/data/frontend.json

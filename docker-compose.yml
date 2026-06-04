@@ -5,14 +5,22 @@ services:
     container_name: ebock-db
     restart: always
     ports:
-      - 5444:5432
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ../ebock-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./keycloak-db-init.sh:/docker-entrypoint-initdb.d/keycloak-db-init.sh
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DATABASE: postgres
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - ebock-net
 
@@ -35,9 +43,9 @@ services:
       - ./webserver/includes/:/etc/nginx/includes/
       - ./webserver/html:/usr/share/nginx/html/
     ports:
-      - "80:80"
-    #depends_on:
-    #  - backend
+      - 80:80
+    depends_on:
+      - auth
     networks:
       - ebock-net
 
@@ -45,15 +53,35 @@ services:
     image: quay.io/keycloak/keycloak:19.0.3
     container_name: auth
     volumes:
-      - ./keycloak/data:/var/tmp
       - ./keycloak/startup-scripts/init.sh:/docker-entrypoint-sh/init.sh
+      - ./tools/envsubst:/usr/local/bin/envsubst
+      - ./keycloak/data:/var/tmp
     entrypoint: sh -c "/docker-entrypoint-sh/init.sh"
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      BACKEND_KEYCLOAK_CLIENT_ID: ${BACKEND_KEYCLOAK_CLIENT_ID}
+      BACKEND_KEYCLOAK_SECRET: ${BACKEND_KEYCLOAK_SECRET}
+      FRONTEND_KEYCLOAK_CLIENT_ID: ${FRONTEND_KEYCLOAK_CLIENT_ID}
+      FRONTEND_KEYCLOAK_SECRET: ${FRONTEND_KEYCLOAK_SECRET}
+      KEYCLOAK_PORT: ${KEYCLOAK_PORT}
       KC_PROXY: edge
+      KC_DB: ${KC_DB}
+      KC_DB_URL: ${KC_DB_URL}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:${KEYCLOAK_PORT}/health/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
     ports:
-      - 8180:8180
+      - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       ebock-net:
       
