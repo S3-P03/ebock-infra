@@ -4,7 +4,7 @@ timeout 300 /bin/bash -c 'until curl -s "$KEYCLOAK_URL/health/ready" | grep -q "
 
 echo "beginning of finalisation ...."
 /opt/keycloak/bin/kcadm.sh config credentials --server "$KEYCLOAK_URL" --realm master --user "$KEYCLOAK_ADMIN" --password "$KEYCLOAK_ADMIN_PASSWORD"
-/opt/keycloak/bin/kcadm.sh create realms -s realm=ebock -s enabled=true -o
+/opt/keycloak/bin/kcadm.sh create realms -s realm=ebock -s enabled=true -s registrationAllowed=true -o
 
 /opt/keycloak/bin/kcadm.sh create clients -r ebock -f /var/tmp/frontend.json
 /opt/keycloak/bin/kcadm.sh create clients -r ebock -f /var/tmp/backend.json
