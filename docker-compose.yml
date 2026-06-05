@@ -23,6 +23,25 @@ services:
       retries: 10
     networks:
       - ebock-net
+   
+
+  migrate:
+    image: postgres:13
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./migrations:/migrations
+      - ./scripts:/scripts
+    entrypoint: ["/scripts/migrate.sh"]
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      PGPASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    restart: "no"
+    networks:
+      - ebock-net
+
 
   #backend:
   # image: ebock_backend
@@ -50,7 +69,7 @@ services:
       - ebock-net
 
   auth:
-    image: quay.io/keycloak/keycloak:19.0.3
+    image: quay.io/keycloak/keycloak
     container_name: auth
     volumes:
       - ./keycloak/startup-scripts/init.sh:/docker-entrypoint-sh/init.sh
