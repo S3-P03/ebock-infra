@@ -1,0 +1,20 @@
+name: Docker Compose Validation
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start services
+        run: docker compose up -d
+
+      - name: Wait for services to be healthy
+        run: |
+          timeout 60 bash -c 'until docker compose ps | grep -q "healthy"; do sleep 2; done'
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
