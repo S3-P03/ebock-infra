@@ -13,32 +13,36 @@ jobs:
         run: |
           chmod +x scripts/migrate.sh
           chmod +x keycloak/startup-scripts/init.sh
+      
+      - name: Create .env file
+        run: |
+          cat << EOF > .env
+          KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}
+          KEYCLOAK_PORT=${{ secrets.KEYCLOAK_PORT }}
+          
+          KEYCLOAK_ADMIN=${{ secrets.KEYCLOAK_ADMIN }}
+          KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          
+          BACKEND_KEYCLOAK_CLIENT_ID=${{ secrets.BACKEND_KEYCLOAK_CLIENT_ID }}
+          BACKEND_KEYCLOAK_SECRET=${{ secrets.BACKEND_KEYCLOAK_SECRET }}
+          
+          FRONTEND_KEYCLOAK_CLIENT_ID=${{ secrets.FRONTEND_KEYCLOAK_CLIENT_ID }}
+          FRONTEND_KEYCLOAK_SECRET=${{ secrets.FRONTEND_KEYCLOAK_SECRET }}
+          
+          KC_DB=${{ secrets.KC_DB }}
+          KC_DB_URL=${{ secrets.KC_DB_URL }}
+          KC_DB_USERNAME=${{ secrets.KC_DB_USERNAME }}
+          KC_DB_PASSWORD=${{ secrets.KC_DB_PASSWORD }}
+          
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          EOF    
           
       - name: Start services
         run: docker compose up -d
-        env:
-          KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
-          KEYCLOAK_PORT: ${{ secrets.KEYCLOAK_PORT }}
-          
-          KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
-          KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
-          
-          BACKEND_KEYCLOAK_CLIENT_ID: ${{ secrets.BACKEND_KEYCLOAK_CLIENT_ID }}
-          BACKEND_KEYCLOAK_SECRET: ${{ secrets.BACKEND_KEYCLOAK_SECRET }}
-          
-          FRONTEND_KEYCLOAK_CLIENT_ID: ${{ secrets.FRONTEND_KEYCLOAK_CLIENT_ID }}
-          FRONTEND_KEYCLOAK_SECRET: ${{ secrets.FRONTEND_KEYCLOAK_SECRET }}
-          
-          KC_DB: ${{ secrets.KC_DB }}
-          KC_DB_URL: ${{ secrets.KC_DB_URL }}
-          KC_DB_USERNAME: ${{ secrets.KC_DB_USERNAME }}
-          KC_DB_PASSWORD: ${{ secrets.KC_DB_PASSWORD }}
-          
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
 
       - name: Wait for services to be healthy
         run: |
@@ -47,26 +51,3 @@ jobs:
       - name: Tear down
         if: always()
         run: docker compose down -v
-        env:
-          KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
-          KEYCLOAK_PORT: ${{ secrets.KEYCLOAK_PORT }}
-          
-          KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
-          KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
-          
-          BACKEND_KEYCLOAK_CLIENT_ID: ${{ secrets.BACKEND_KEYCLOAK_CLIENT_ID }}
-          BACKEND_KEYCLOAK_SECRET: ${{ secrets.BACKEND_KEYCLOAK_SECRET }}
-          
-          FRONTEND_KEYCLOAK_CLIENT_ID: ${{ secrets.FRONTEND_KEYCLOAK_CLIENT_ID }}
-          FRONTEND_KEYCLOAK_SECRET: ${{ secrets.FRONTEND_KEYCLOAK_SECRET }}
-          
-          KC_DB: ${{ secrets.KC_DB }}
-          KC_DB_URL: ${{ secrets.KC_DB_URL }}
-          KC_DB_USERNAME: ${{ secrets.KC_DB_USERNAME }}
-          KC_DB_PASSWORD: ${{ secrets.KC_DB_PASSWORD }}
-          
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
