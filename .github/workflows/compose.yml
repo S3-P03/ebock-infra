@@ -68,5 +68,6 @@ jobs:
           timeout 60 bash -c 'until docker compose ps | grep -q "healthy"; do sleep 2; done'
 
       - name: Tear down
+        working-directory: ebock-infra
         if: always()
         run: docker compose down -v
