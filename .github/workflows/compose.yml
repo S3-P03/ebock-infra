@@ -19,15 +19,18 @@ jobs:
           cat << EOF > .env
           KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}
           KEYCLOAK_PORT=${{ secrets.KEYCLOAK_PORT }}
+          KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}
           
           KEYCLOAK_ADMIN=${{ secrets.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           
           BACKEND_KEYCLOAK_CLIENT_ID=${{ secrets.BACKEND_KEYCLOAK_CLIENT_ID }}
           BACKEND_KEYCLOAK_SECRET=${{ secrets.BACKEND_KEYCLOAK_SECRET }}
+          BACKEND_PORT=${{ secrets.BACKEND_PORT }}
           
           FRONTEND_KEYCLOAK_CLIENT_ID=${{ secrets.FRONTEND_KEYCLOAK_CLIENT_ID }}
           FRONTEND_KEYCLOAK_SECRET=${{ secrets.FRONTEND_KEYCLOAK_SECRET }}
+          FRONTEND_PORT=${{ secrets.FRONTEND_PORT }}
           
           KC_DB=${{ secrets.KC_DB }}
           KC_DB_URL=${{ secrets.KC_DB_URL }}
@@ -39,6 +42,7 @@ jobs:
           DB_USER=${{ secrets.DB_USER }}
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           DB_NAME=${{ secrets.DB_NAME }}
+          CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}
           EOF    
           
       - name: Start services
