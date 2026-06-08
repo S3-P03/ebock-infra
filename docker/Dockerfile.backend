@@ -1,13 +1,27 @@
-FROM gradle:8-jdk21 AS builder
+FROM gradle:9.3-jdk21 AS build
 
 WORKDIR /app
 
-COPY build.gradle settings.gradle ./
-COPY src ./src
+COPY ebock-backend/gradle.properties ./
+COPY ebock-backend/build.gradle ebock-backend/settings.gradle ./
+COPY ebock-backend/gradle/ gradle/
+COPY ebock-backend/gradlew ./
 
-RUN gradle bootJar --no-daemon -q
+RUN chmod +x gradlew
 
-FROM eclipse-temurin:21-jre-alpine
-COPY --from=builder /app/build/libs/*.jar app.jar
+COPY ebock-backend/src/ src/
+
+RUN gradle build -x test --no-daemon
+
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+
+COPY --from=build /app/build/quarkus-app/lib/ /app/lib/
+COPY --from=build /app/build/quarkus-app/*.jar /app/
+COPY --from=build /app/build/quarkus-app/app/ /app/app/
+COPY --from=build /app/build/quarkus-app/quarkus/ /app/quarkus/
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+CMD ["java", "-jar", "/app/quarkus-run.jar"]
