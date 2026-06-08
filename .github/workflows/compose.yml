@@ -15,7 +15,10 @@ jobs:
           repository: S3-P03/ebock-backend
           path: ebock-backend
           token: ${{ secrets.GITHUB_TOKEN }}
-    
+
+      - name: Debug - list cloned repo
+        run: find other-repo -type f | head -50
+  
       - name: Make scripts executable
         run: |
           chmod +x scripts/migrate.sh
