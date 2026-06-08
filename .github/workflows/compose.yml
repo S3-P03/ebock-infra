@@ -8,6 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+            path: ebock-infra
 
       - name: Checkout dependency repo
         uses: actions/checkout@v4
@@ -56,6 +60,7 @@ jobs:
           EOF    
           
       - name: Start services
+        working-directory: ebock-infra
         run: docker compose up -d
 
       - name: Wait for services to be healthy
