@@ -9,6 +9,13 @@ jobs:
       - uses: actions/checkout@v4
 
 
+      - name: Checkout dependency repo
+        uses: actions/checkout@v4
+        with:
+          repository: S3-P03/ebock-backend
+          path: ebock-backend
+          token: ${{ secrets.GITHUB_TOKEN }}
+    
       - name: Make scripts executable
         run: |
           chmod +x scripts/migrate.sh
