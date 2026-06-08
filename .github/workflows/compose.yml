@@ -20,15 +20,14 @@ jobs:
           path: ebock-backend
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug - list cloned repo
-        run: find ebock-backend -type f | head -50
-  
       - name: Make scripts executable
+        working-directory: ebock-infra
         run: |
           chmod +x scripts/migrate.sh
           chmod +x keycloak/startup-scripts/init.sh
       
       - name: Create .env file
+        working-directory: ebock-infra
         run: |
           cat << EOF > .env
           KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}
