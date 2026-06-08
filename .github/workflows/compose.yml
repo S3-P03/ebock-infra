@@ -21,7 +21,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug - list cloned repo
-        run: find other-repo -type f | head -50
+        run: find ebock-backend -type f | head -50
   
       - name: Make scripts executable
         run: |
