@@ -50,12 +50,13 @@ services:
       - ebock-net
 
   auth:
-    image: quay.io/keycloak/keycloak:19.0.3
+    image: quay.io/keycloak/keycloak:23.0.0
     container_name: auth
     volumes:
       - ./keycloak/startup-scripts/init.sh:/docker-entrypoint-sh/init.sh
       - ./tools/envsubst:/usr/local/bin/envsubst
       - ./keycloak/data:/var/tmp
+      - ../ebock-frontend/build_keycloak/keycloak-theme-for-kc-22-to-25.jar:/opt/keycloak/providers/keycloak-theme-for-kc-22-to-25.jar
     entrypoint: sh -c "/docker-entrypoint-sh/init.sh"
     environment:
       KEYCLOAK_URL: ${KEYCLOAK_URL}
