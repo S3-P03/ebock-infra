@@ -1,0 +1,73 @@
+name: Docker Compose Validation
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+            path: ebock-infra
+
+      - name: Checkout dependency repo
+        uses: actions/checkout@v4
+        with:
+          repository: S3-P03/ebock-backend
+          path: ebock-backend
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make scripts executable
+        working-directory: ebock-infra
+        run: |
+          chmod +x scripts/migrate.sh
+          chmod +x keycloak/startup-scripts/init.sh
+      
+      - name: Create .env file
+        working-directory: ebock-infra
+        run: |
+          cat << EOF > .env
+          KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}
+          KEYCLOAK_PORT=${{ secrets.KEYCLOAK_PORT }}
+          KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}
+          
+          KEYCLOAK_ADMIN=${{ secrets.KEYCLOAK_ADMIN }}
+          KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+          
+          BACKEND_KEYCLOAK_CLIENT_ID=${{ secrets.BACKEND_KEYCLOAK_CLIENT_ID }}
+          BACKEND_KEYCLOAK_SECRET=${{ secrets.BACKEND_KEYCLOAK_SECRET }}
+          BACKEND_PORT=${{ secrets.BACKEND_PORT }}
+          
+          FRONTEND_KEYCLOAK_CLIENT_ID=${{ secrets.FRONTEND_KEYCLOAK_CLIENT_ID }}
+          FRONTEND_KEYCLOAK_SECRET=${{ secrets.FRONTEND_KEYCLOAK_SECRET }}
+          FRONTEND_PORT=${{ secrets.FRONTEND_PORT }}
+          
+          KC_DB=${{ secrets.KC_DB }}
+          KC_DB_URL=${{ secrets.KC_DB_URL }}
+          KC_DB_USERNAME=${{ secrets.KC_DB_USERNAME }}
+          KC_DB_PASSWORD=${{ secrets.KC_DB_PASSWORD }}
+          
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}
+          EOF    
+          
+      - name: Start services
+        working-directory: ebock-infra
+        run: docker compose up -d
+
+      - name: Wait for services to be healthy
+        working-directory: ebock-infra
+        run: |
+          timeout 60 bash -c 'until docker compose ps | grep -q "healthy"; do sleep 2; done'
+
+      - name: Tear down
+        working-directory: ebock-infra
+        if: always()
+        run: docker compose down -v
