@@ -172,7 +172,7 @@ VALUES
    ('pele3157', 'Éliane', 'Pelletier', 'pele3157@usherbrooke.ca', false, NULL, true, NOW(), NULL),
    ('test1234', 'Utiilisateur', 'Test', 'test1234@usherbrooke.ca', false, NULL, true, NOW(), NULL);
 
-INSERT INTO delivery_option (name) VALUES ('Livraison'), ('À récupérer'), ('Transfert par courriel');
+INSERT INTO delivery_option (name) VALUES ('Livraison'), ('Ramassage'), ('Transfert par courriel');
 
 INSERT INTO category (name, parent_category) VALUES ('Vêtements', NULL), ('Électronique', NULL), ('Livres', NULL), ('Maisons', NULL), ('Sports', NULL), ('Autres', NULL), ('Hauts', 1), ('Bas', 1), ('Chaussures', 1), ('Accessoires', 1);
 
