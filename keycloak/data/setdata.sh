@@ -11,5 +11,7 @@ echo "beginning of finalisation ...."
 
 /opt/keycloak/bin/kcadm.sh create partialImport -r ebock -s ifResourceExists=OVERWRITE -f /var/tmp/users.json
 
+/opt/keycloak/bin/kcadm.sh update realms/ebock -s loginTheme=ebock-frontend
+
 echo -e -n "\r"
 echo "server running ...."
