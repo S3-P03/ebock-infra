@@ -172,7 +172,7 @@ VALUES
    ('pele3157', 'Éliane', 'Pelletier', 'pele3157@usherbrooke.ca', false, NULL, true, NOW(), NULL),
    ('test1234', 'Utiilisateur', 'Test', 'test1234@usherbrooke.ca', false, NULL, true, NOW(), NULL);
 
-INSERT INTO delivery_option (name) VALUES ('Livraison'), ('À récupérer'), ('Transfert par courriel');
+INSERT INTO delivery_option (name) VALUES ('Livraison'), ('Ramassage'), ('Transfert par courriel');
 
 INSERT INTO category (name, parent_category) VALUES ('Vêtements', NULL), ('Électronique', NULL), ('Livres', NULL), ('Maisons', NULL), ('Sports', NULL), ('Autres', NULL), ('Hauts', 1), ('Bas', 1), ('Chaussures', 1), ('Accessoires', 1);
 
@@ -181,3 +181,18 @@ INSERT INTO tag (name) VALUES ('Électronique'), ('Neuf'), ('Cours'), ('Usager')
 INSERT INTO log_category (log_category_name) VALUES ('User Actions'), ('Item Management'), ('Orders'), ('Comments'), ('System Events');
 
 INSERT INTO wear (name) VALUES ('Factory New'), ('Minimal Wear'), ('Field-Tested'), ('Well-Worn'), ('Battle-Scarred');
+
+INSERT INTO ebock.item
+    (name, description, price, added_at, updated_at, sold, quantity, archived, category_id, wear_id, seller_cip)
+VALUES ('Mac Book avec Puce M5', 'MacBook avec une puce M5 qui run linux très bien', 2500.12, now(),
+        now(), false, 1, false, 2, 1, 'herl2700'),
+    ('Auto BAJA', 'Belle auto baja avec une bonne transmission', 15234.60, now(),
+     now(), false, 1, false, 2 , 1, 'boum7113'),
+    ('Fusée L1', 'Une belle fusée qui peux être utilisé comme un missile', 1000.00, now(),
+     now(), false, 1, false, 2, 1, 'dubw5596'),
+    ('Chalk', 'Chalk pour l escalade', 67.67, now(), now(), true, 1,
+     false, 5, 1, 'larj4236'),
+    ('Prise de laptop', 'Une prise de laptop vraiment longue', 10.00, now(), now(),
+     false, 1, false, 2, 1, 'pele3157'),
+    ('Lit', 'Pas besoin de lit si je dors pas', 649.00, now(), now(),
+     true, 0, true, 4, 1, 'bela3439');
