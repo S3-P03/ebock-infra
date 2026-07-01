@@ -9,6 +9,13 @@ echo "beginning of finalisation ...."
 /opt/keycloak/bin/kcadm.sh create clients -r ebock -f /var/tmp/frontend.json
 /opt/keycloak/bin/kcadm.sh create clients -r ebock -f /var/tmp/backend.json
 
+/opt/keycloak/bin/kcadm.sh add-roles -r ebock \
+  --uusername "service-account-${BACKEND_KEYCLOAK_CLIENT_ID}" \
+  --cclientid realm-management \
+  --rolename manage-users \
+  --rolename view-users \
+  --rolename query-users
+
 /opt/keycloak/bin/kcadm.sh create partialImport -r ebock -s ifResourceExists=OVERWRITE -f /var/tmp/users.json
 
 /opt/keycloak/bin/kcadm.sh update realms/ebock -s loginTheme=ebock-frontend
