@@ -53,4 +53,7 @@ INSERT INTO ebock.order_message (timestamp_, content, is_read, order_id, sender_
                                                                                        ('2026-06-18 09:54:44.600569', 'Bon matin !', false, 6, 'larj4236'),
                                                                                        ('2026-06-18 09:55:03.857547', 'shut up', false, 6, 'pele3157');
 
+INSERT INTO ebock.order_message (timestamp_, content, is_read, order_id, sender_cip) VALUES
+                                                                                         ('2026-07-02 13:11:51.000000', '67777777', true, 2, 'dubw5596'),
+                                                                                         ('2026-07-02 13:13:51.000000', 'ban', true, 2, 'larj4236');
 COMMIT;
