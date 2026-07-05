@@ -2,6 +2,7 @@ BEGIN;
 
 ALTER TABLE ebock.address ADD COLUMN city VARCHAR(50) NOT NULL DEFAULT '';
 ALTER TABLE ebock.address ALTER COLUMN city DROP DEFAULT;
+ALTER TABLE ebock.user_ ALTER COLUMN address_id DROP DEFAULT;
 
 ALTER TABLE ebock.user_
     DROP COLUMN is_admin,
