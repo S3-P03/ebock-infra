@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE ebock.comment_
+    ADD COLUMN deleted_at TIMESTAMPTZ DEFAULT NULL;
+
+COMMIT;
