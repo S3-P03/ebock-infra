@@ -114,6 +114,24 @@
           "value": "projet"
         }
       ]
+    },
+    {
+      "username": "test1234",
+      "enabled": true,
+      "firstName": "Test",
+      "lastName": "Test",
+      "email": "test1234@usherbrooke.ca",
+      "realmRoles": [
+        "student",
+        "default-roles-master"
+      ],
+      "credentials": [
+        {
+          "temporary": true,
+          "type": "password",
+          "value": "projet"
+        }
+      ]
     }
   ]
 }
