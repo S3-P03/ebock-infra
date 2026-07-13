@@ -14,7 +14,8 @@ echo "beginning of finalisation ...."
   --cclientid realm-management \
   --rolename manage-users \
   --rolename view-users \
-  --rolename query-users
+  --rolename query-users \
+  --rolename manage-realm
 
 /opt/keycloak/bin/kcadm.sh create partialImport -r ebock -s ifResourceExists=OVERWRITE -f /var/tmp/users.json
 
