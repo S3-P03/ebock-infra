@@ -5,4 +5,7 @@ ALTER TABLE ebock.item
 
 ALTER TABLE ebock.item DROP COLUMN archived;
 
+ALTER TABLE ebock.order_
+    ADD COLUMN archived_at TIMESTAMPTZ DEFAULT NULL;
+
 COMMIT;
