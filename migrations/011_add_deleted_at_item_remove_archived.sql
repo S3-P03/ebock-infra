@@ -1,0 +1,8 @@
+BEGIN;
+
+ALTER TABLE ebock.item
+    ADD COLUMN deleted_at TIMESTAMPTZ DEFAULT NULL;
+
+ALTER TABLE ebock.item DROP COLUMN archived;
+
+COMMIT;
